@@ -1,5 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, AppRegistry } from "react-native";
 
-export const TemplateDetails = () => <Text>TemplateDetails</Text>;
+const TemplateDetails = () => <Text>TemplateDetails</Text>;
+
+export default TemplateDetails
 
