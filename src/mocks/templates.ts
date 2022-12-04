@@ -1,4 +1,4 @@
-{
+export const DATA_MOCK = {
     "data": [
         {
             "id": 1,
@@ -223,7 +223,8 @@
                                 ]
                             }
                         ]
-                    }
+                    },
+                  
                 ]
             }
         }
