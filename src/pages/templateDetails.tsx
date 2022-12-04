@@ -1,10 +1,10 @@
 import { NavigationProp } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { DATA_MOCK } from '../mocks/templates';
-
 import { CheckBox, Button } from 'react-native-elements';
+
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -18,17 +18,67 @@ const templateDetails = ({ route }: RouterProps) => {
     ?.attributes.templates.find(item => item.id === itemId)
     ?.children.find(x => x.id === itemId);
 
-  const [checkQuestion, setCheckQuestion] = useState<number>();
+  const [checkQuestionId, setCheckQuestionId] = useState<number>();
   const [contentActive, setContentActive] = useState<boolean>(false);
+  const [listActiveCardSubContentById, setListActiveCardSubContentByid] = useState<string[]>([])
 
   const actionSubmit = () => {
     setContentActive(true);
   };
 
-  const componentDetails = () => <View />;
+  const componentDetails = () => {
+
+    const listItemById = list?.children.find(e => e.id === checkQuestionId)
+
+    const actionActiveCard = (item) => {
+      const checkItem = listActiveCardSubContentById.includes(String(item.id + item.type))
+      if (checkItem) {
+        let arrayList = listActiveCardSubContentById.filter(e => e !== String(item.id + item.type))
+        setListActiveCardSubContentByid(arrayList)
+      } else {
+        setListActiveCardSubContentByid([...listActiveCardSubContentById, String(item.id + item.type)])
+      }
+    }
+
+    return (
+      <View >
+        {
+          listItemById?.children.map(item =>
+            <TouchableOpacity onPress={() => actionActiveCard(item)}>
+              <View key={item.id} style={{ ...styles.mainContainer, marginTop: 16 }}>
+                <View style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Icon name={listActiveCardSubContentById.includes(String(item.id + item.type)) ? "up" : "down"} size={20} color="#F29A4B" />
+                  <Text style={{ paddingLeft: 5 }}>{item.name || item.type}</Text>
+                </View>
+                <View style={styles.cardLineBottom} />
+                {
+                  listActiveCardSubContentById.includes(String(item.id + item.type)) && (
+                    <View>
+                      {
+                        item.children.map(subItem =>
+                          <View style={{ ...styles.mainContainer, marginTop: 16 }}>
+                            <Text>{subItem.text || subItem.type}</Text>
+                            <View style={{ ...styles.cardLineBottom, marginBottom: 14 }} />
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                              <Icon name={subItem.compulsory ? "like1" : "dislike1"} size={28} color="#F29A4B" />
+                            </View>
+                          </View>
+                        )
+                      }
+                    </View>
+                  )
+                }
+              </View>
+            </TouchableOpacity>
+          )
+        }
+      </View>
+    )
+  }
+
 
   return (
-    <View style={{ padding: 12 }}>
+    <View style={{ padding: 12, flex: 1 }}>
       <View style={styles.mainContainer}>
         <View style={styles.card}>
           <Text>Select Type of Report</Text>
@@ -45,14 +95,20 @@ const templateDetails = ({ route }: RouterProps) => {
             checkedColor="#F29A4B"
             size={40}
             title={item.label}
-            onPress={() => setCheckQuestion(item.id)}
-            checked={checkQuestion === item.id}
+            onPress={() => setCheckQuestionId(item.id)}
+            checked={checkQuestionId === item.id}
           />
         ))}
         <View style={styles.cardLineBottom} />
       </View>
       {contentActive ? (
-        componentDetails()
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          {componentDetails()}
+        </ScrollView>
       ) : (
         <Button
           buttonStyle={{
@@ -62,7 +118,7 @@ const templateDetails = ({ route }: RouterProps) => {
           }}
           titleStyle={{ fontWeight: '600' }}
           onPress={() => actionSubmit()}
-          disabled={!checkQuestion ? true : false}
+          disabled={!checkQuestionId ? true : false}
           title="Submit"
         />
       )}
@@ -77,6 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 1,
     borderColor: '#F29A4B',
+    borderRadius: 8
   },
   card: {
     display: 'flex',
@@ -95,6 +152,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     marginTop: 16,
     borderColor: '#F29A4B',
+  },
+  scrollView: {
+    marginBottom: 24,
+    marginTop: 12,
+
+
   },
 });
 

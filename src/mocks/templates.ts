@@ -76,7 +76,7 @@ export const DATA_MOCK = {
                                             {
                                                 "id": 11,
                                                 "type": "question",
-                                                "text": "Boolean logic 1",
+                                                "name": "Boolean logic 1",
                                                 "question_type": "boolean",
                                                 "order": 2,
                                                 "compulsory": false,
