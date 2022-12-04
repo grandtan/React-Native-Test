@@ -41,7 +41,7 @@ const App = () => {
         <Stack.Screen
           name="TemplatesList"
           component={TemplatesList}
-          options={{ title: 'Folder sample' }}
+          options={{ title: 'Folder sample', headerBackTitle: 'Home' }}
         />
         <Stack.Screen
           name="TemplateDetails"
