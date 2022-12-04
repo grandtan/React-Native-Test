@@ -28,6 +28,7 @@ const App = () => {
           backgroundColor: '#F29A4B',
         },
         headerTintColor: '#fff',
+        contentStyle: { backgroundColor: '#F4F0EC' }
 
       }}>
         <Stack.Screen
@@ -38,13 +39,13 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name="TemplateDetails"
-          component={TemplateDetails}
+          name="TemplatesList"
+          component={TemplatesList}
           options={{ title: 'Folder sample' }}
         />
         <Stack.Screen
-          name="TemplatesList"
-          component={TemplatesList}
+          name="TemplateDetails"
+          component={TemplateDetails}
           options={{ title: 'Template sample' }}
         />
       </Stack.Navigator>
